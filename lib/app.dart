@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_example/authentication_provider.dart';
+import 'package:flutter_application_example/home_page.dart';
 import 'package:flutter_application_example/login_page.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MainApp extends StatelessWidget {
+class MainApp extends HookConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final token = ref.watch(tokenProvider);
+
     final theme = MainTheme();
     return MaterialApp(
       // Change using state management
@@ -20,7 +25,7 @@ class MainApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
 
-      home: const LoginPage(),
+      home: token == null ? const LoginPage() : const HomePage(),
     );
   }
 }

@@ -19,7 +19,7 @@ l10n --**init**
 ### riverpod
 generate files
 ```bash
-flutter pub run build_runner build --delete-conflicting-outputs
+flutter pub run build_runner build --delete-conflicting-outputs && flutter pub get
 ```
 
 
