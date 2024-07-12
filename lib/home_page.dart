@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/authentication_provider.dart';
+import 'package:flutter_application_example/login_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod_hook_mutation/riverpod_hook_mutation.dart';
@@ -115,7 +116,9 @@ class SettingsPage extends HookConsumerWidget {
               },
             );
           },
-          child: const Text('Logout'),
+          child: logoutMutation.isLoading
+              ? const ButtonLoading()
+              : const Text('Logout'),
         ),
       ),
     );
