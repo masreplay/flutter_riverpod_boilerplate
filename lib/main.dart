@@ -6,6 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 
 Future<void> main() async {
+  // widgets
+  WidgetsFlutterBinding.ensureInitialized();
+
   // edgar loading
   final sharedPreferences = await SharedPreferences.getInstance();
 

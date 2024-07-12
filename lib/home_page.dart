@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_example/authentication_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:riverpod_hook_mutation/riverpod_hook_mutation.dart';
 
 part 'home_page.g.dart';
 
@@ -37,6 +39,20 @@ class HomePage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const SettingsPage();
+                  },
+                ),
+              );
+            },
+            icon: const Icon(Icons.settings_outlined),
+          ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () => ref.refresh(homeProvider.future),
@@ -59,7 +75,7 @@ class HomePage extends HookConsumerWidget {
                   Text('Error: $error'),
                   ElevatedButton(
                     onPressed: () {
-                      ref.refresh(homeProvider);
+                      ref.invalidate(homeProvider);
                     },
                     child: const Text('Retry'),
                   ),
@@ -72,6 +88,34 @@ class HomePage extends HookConsumerWidget {
               child: CircularProgressIndicator(),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsPage extends HookConsumerWidget {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final logoutMutation = useMutation();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () async {
+            logoutMutation.future(
+              ref.read(authenticationProvider.notifier).logout(),
+              data: (data) {
+                Navigator.of(context).pop();
+              },
+            );
+          },
+          child: const Text('Logout'),
         ),
       ),
     );

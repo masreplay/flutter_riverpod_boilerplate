@@ -7,3 +7,7 @@ part 'shared_preferences.g.dart';
 SharedPreferences sharedPreferences(SharedPreferencesRef ref) {
   throw UnimplementedError();
 }
+
+class Preferences {
+  static const String token = 'token';
+}

@@ -1,48 +1,20 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_example/authentication_provider.dart';
 import 'package:flutter_application_example/gap.dart';
-import 'package:flutter_application_example/home_page.dart';
 import 'package:flutter_application_example/l10n/l10n.dart';
 import 'package:flutter_application_example/use_form_key.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_hook_mutation/riverpod_hook_mutation.dart';
 
 import 'create_account_page.dart';
 
-class LoginResponse {
-  final String message;
-  final String token;
-
-  const LoginResponse(
-    this.message,
-    this.token,
-  );
-}
-
-Future<LoginResponse> login(String email, String password) {
-  if (Random().nextBool()) {
-    return Future.delayed(
-      const Duration(seconds: 2),
-      () => const LoginResponse(
-        'Login successful',
-        'token',
-      ),
-    );
-  } else {
-    return Future.delayed(
-      const Duration(seconds: 2),
-      () => throw Exception('Login failed'),
-    );
-  }
-}
-
-class LoginPage extends HookWidget {
+class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
 
@@ -94,18 +66,18 @@ class LoginPage extends HookWidget {
                   FilledButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
+                        final notifier = ref.read(
+                          authenticationProvider.notifier,
+                        );
                         loginMutation.future(
-                          login(email.text, password.text),
+                          notifier.login(
+                            email: email.text,
+                            password: password.text,
+                          ),
                           data: (data) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(data.message),
-                              ),
-                            );
-                            // push to home page
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
                               ),
                             );
                           },

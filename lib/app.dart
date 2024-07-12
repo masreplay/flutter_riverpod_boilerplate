@@ -11,7 +11,7 @@ class MainApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final token = ref.watch(tokenProvider);
+    final token = ref.watch(authenticationProvider);
 
     final theme = MainTheme();
     return MaterialApp(
