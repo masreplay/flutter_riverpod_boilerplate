@@ -13,3 +13,14 @@ dart pub global activate l10n_lint
 ```bash
 l10n --**init**
 ```
+
+
+
+### riverpod
+generate files
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+
+use `HookConsumerWidget` for all pages

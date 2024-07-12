@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/gap.dart';
+import 'package:flutter_application_example/home_page.dart';
 import 'package:flutter_application_example/l10n/l10n.dart';
 import 'package:flutter_application_example/use_form_key.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -101,8 +102,12 @@ class LoginPage extends HookWidget {
                                 content: Text(data.message),
                               ),
                             );
-
-                            
+                            // push to home page
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                            );
                           },
                           error: (error, stackTrace) {
                             ScaffoldMessenger.of(context).showSnackBar(
