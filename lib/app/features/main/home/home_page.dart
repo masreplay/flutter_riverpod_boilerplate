@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_example/app/features/main/home/todo_detail_screen.dart';
 import 'package:flutter_application_example/app/features/main/settings/settings_page.dart';
 import 'package:flutter_application_example/app/widgets/status/button_loading.dart';
 import 'package:flutter_application_example/app/widgets/status/error_widget.dart';
@@ -82,6 +83,15 @@ class TodoListTile extends HookConsumerWidget {
 
     return ListTile(
       title: Text(item.title),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return TodoDetailScreen(id: item.id);
+            },
+          ),
+        );
+      },
       leading: item.completed
           ? Icon(
               Icons.check,
@@ -129,3 +139,4 @@ class TodoListTile extends HookConsumerWidget {
     );
   }
 }
+
