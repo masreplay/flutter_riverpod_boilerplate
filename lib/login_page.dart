@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_application_example/gap.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,31 +23,101 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Page'),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    "Login",
+                    style: textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Gap(12),
+                  Text(
+                    "Welcome back, please login to your account",
+                    style: textTheme.titleMedium,
+                  ),
+                  const Gap(24),
+                  LoginEmailFormField(
+                    controller: emailController,
+                  ),
+                  const Gap(12),
+                  LoginPasswordFormField(
+                    controller: passwordController,
+                  ),
+                  const LoginForgotPasswordButton(),
+                  FilledButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        final String email = emailController.text;
+                        final String password = passwordController.text;
+                        print('Email: $email, Password: $password');
+                      }
+                    },
+                    child: const Text('Login'),
+                  ),
+                  const LoginCreateAccountButton(),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            LoginEmailFormField(
-              controller: emailController,
-            ),
-            LoginPasswordFormField(
-              controller: passwordController,
-            ),
-            FilledButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  final String email = emailController.text;
-                  final String password = passwordController.text;
-                  print('Email: $email, Password: $password');
-                }
-              },
-              child: const Text('Login'),
-            ),
-          ],
+    );
+  }
+}
+
+class LoginCreateAccountButton extends StatelessWidget {
+  const LoginCreateAccountButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Don\'t have an account? '),
+        TextButton(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+          ),
+          onPressed: () {},
+          child: const Text('Register'),
+        ),
+      ],
+    );
+  }
+}
+
+class LoginForgotPasswordButton extends StatelessWidget {
+  const LoginForgotPasswordButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () {
+          // Navigate to the registration page
+        },
+        child: const Text(
+          'Forgot password?',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
@@ -78,6 +150,7 @@ class LoginEmailFormField extends StatelessWidget {
       },
       decoration: const InputDecoration(
         labelText: 'Email',
+        prefixIcon: Icon(Icons.email_outlined),
       ),
     );
   }
@@ -95,9 +168,6 @@ class LoginPasswordFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: const InputDecoration(
-        labelText: 'Password',
-      ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter your password';
@@ -107,6 +177,10 @@ class LoginPasswordFormField extends StatelessWidget {
           return null;
         }
       },
+      decoration: const InputDecoration(
+        labelText: 'Password',
+        prefixIcon: Icon(Icons.lock_outline),
+      ),
     );
   }
 }
