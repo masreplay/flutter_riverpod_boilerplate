@@ -1,3 +1,4 @@
+import 'package:flutter_application_example/data/cache/preferences.dart';
 import 'package:flutter_application_example/riverpod/shared_preferences.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -18,8 +19,7 @@ class Authentication extends _$Authentication {
   // provider
   @override
   String? build() {
-    final sharedPreferences = ref.watch(sharedPreferencesProvider);
-
+    final sharedPreferences = ref.read(sharedPreferencesProvider);
     return sharedPreferences.getString(Preferences.token);
   }
 
@@ -36,7 +36,6 @@ class Authentication extends _$Authentication {
     );
 
     final sharedPreferences = ref.read(sharedPreferencesProvider);
-
     await sharedPreferences.setString(Preferences.token, result.token);
 
     state = result.token;
@@ -50,7 +49,6 @@ class Authentication extends _$Authentication {
     await Future.delayed(const Duration(seconds: 2));
 
     final sharedPreferences = ref.read(sharedPreferencesProvider);
-
     await sharedPreferences.remove(Preferences.token);
 
     state = null;

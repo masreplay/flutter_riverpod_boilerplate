@@ -7,4 +7,3 @@ part 'shared_preferences.g.dart';
 SharedPreferences sharedPreferences(SharedPreferencesRef ref) {
   throw UnimplementedError();
 }
-
