@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_example/email_form_field.dart';
 import 'package:flutter_application_example/gap.dart';
+import 'package:flutter_application_example/login_page.dart';
+import 'package:flutter_application_example/password_form_field.dart';
 
-import 'create_account_page.dart';
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class CreateAccountPage extends StatefulWidget {
+  const CreateAccountPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<CreateAccountPage> createState() => _CreateAccountPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _CreateAccountPageState extends State<CreateAccountPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController emailController = TextEditingController();
   late final TextEditingController passwordController = TextEditingController();
+  late final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -38,25 +41,35 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    "Login",
+                    "Sign up",
                     style: textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const Gap(12),
                   Text(
-                    "Welcome back, please login to your account",
+                    "Create an account to get started",
                     style: textTheme.titleMedium,
                   ),
                   const Gap(24),
-                  _LoginEmailFormField(
+                  _CreateAccountEmailFormField(
                     controller: emailController,
                   ),
                   const Gap(12),
-                  _LoginPasswordFormField(
+                  _CreateAccountPasswordFormField(
                     controller: passwordController,
                   ),
-                  const _LoginForgotPasswordButton(),
+                  const Gap(12),
+                  ValueListenableBuilder(
+                    valueListenable: passwordController,
+                    builder: (context, value, child) {
+                      return _CreateAccountConfirmPasswordFormField(
+                        controller: confirmPasswordController,
+                        otherPassword: value.text,
+                      );
+                    },
+                  ),
+                  const _CreateAccountForgotPasswordButton(),
                   FilledButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -67,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: const Text('Login'),
                   ),
-                  const _LoginCreateAccountButton(),
+                  const _CreateSignInAccountButton(),
                 ],
               ),
             ),
@@ -78,15 +91,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class _LoginCreateAccountButton extends StatelessWidget {
-  const _LoginCreateAccountButton();
+class _CreateSignInAccountButton extends StatelessWidget {
+  const _CreateSignInAccountButton();
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Don\'t have an account? '),
+        const Text('Already have an account?'),
         TextButton(
           style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
@@ -94,28 +107,26 @@ class _LoginCreateAccountButton extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const CreateAccountPage(),
+                builder: (context) => const LoginPage(),
               ),
             );
           },
-          child: const Text('Register'),
+          child: const Text('Sign in'),
         ),
       ],
     );
   }
 }
 
-class _LoginForgotPasswordButton extends StatelessWidget {
-  const _LoginForgotPasswordButton();
+class _CreateAccountForgotPasswordButton extends StatelessWidget {
+  const _CreateAccountForgotPasswordButton();
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () {
-          // Navigate to the registration page
-        },
+        onPressed: () {},
         child: const Text(
           'Forgot password?',
           style: TextStyle(
@@ -127,8 +138,8 @@ class _LoginForgotPasswordButton extends StatelessWidget {
   }
 }
 
-class _LoginEmailFormField extends StatelessWidget {
-  const _LoginEmailFormField({
+class _CreateAccountEmailFormField extends StatelessWidget {
+  const _CreateAccountEmailFormField({
     required this.controller,
   });
 
@@ -136,52 +147,41 @@ class _LoginEmailFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: (value) {
-        // regex for email validation
-        final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return EmailFormField(controller: controller);
+  }
+}
 
-        if (value == null || value.isEmpty) {
-          return 'Please enter your email';
-        } else if (!emailRegex.hasMatch(value)) {
-          return 'Please enter a valid email';
-        } else {
-          return null;
-        }
-      },
-      decoration: const InputDecoration(
-        labelText: 'Email',
-        prefixIcon: Icon(Icons.email_outlined),
-      ),
+class _CreateAccountPasswordFormField extends StatelessWidget {
+  const _CreateAccountPasswordFormField({
+    required this.controller,
+  });
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return PasswordFormField(
+      controller: controller,
+      label: 'Password',
     );
   }
 }
 
-class _LoginPasswordFormField extends StatelessWidget {
-  const _LoginPasswordFormField({
+class _CreateAccountConfirmPasswordFormField extends StatelessWidget {
+  const _CreateAccountConfirmPasswordFormField({
     required this.controller,
+    required this.otherPassword,
   });
 
   final TextEditingController controller;
+  final String otherPassword;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return PasswordFormField(
       controller: controller,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your password';
-        } else if (value.length < 6) {
-          return 'Password must be at least 6 characters';
-        } else {
-          return null;
-        }
-      },
-      decoration: const InputDecoration(
-        labelText: 'Password',
-        prefixIcon: Icon(Icons.lock_outline),
-      ),
+      otherPassword: otherPassword,
+      label: 'Confirm password',
     );
   }
 }
