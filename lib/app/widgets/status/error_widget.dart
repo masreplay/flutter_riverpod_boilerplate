@@ -34,7 +34,7 @@ class AppErrorWidget extends StatelessWidget {
         );
       } else {
         return const Center(
-          child:  Text('حدث خطا ما يرجى المحاولة مرة اخرى'),
+          child: Text('حدث خطا ما يرجى المحاولة مرة اخرى'),
         );
       }
     } else {
