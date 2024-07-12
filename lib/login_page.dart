@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/gap.dart';
+import 'package:flutter_application_example/l10n/l10n.dart';
 
 import 'create_account_page.dart';
 
@@ -24,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -38,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    "Login",
+                    l10n.loginPageTitle,
                     style: textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

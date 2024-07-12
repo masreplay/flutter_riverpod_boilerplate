@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -13,6 +14,9 @@ class MainApp extends StatelessWidget {
       theme: theme.light(),
       darkTheme: theme.dark(),
       home: const LoginPage(),
+      locale: const Locale('en'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
