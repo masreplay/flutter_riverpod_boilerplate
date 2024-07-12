@@ -38,3 +38,19 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+
+
+scripts:
+  g: 
+    $script: flutter pub run build_runner build --delete-conflicting-outputs && flutter pub get
+    $description: "Generate files"
+    $usage: rps g
+  fix-format:
+    $script: dart fix --apply && dart format -o write ./lib
+    $description: "Fix format"
+    $usage: rps fix-format
+  uninstall:
+    android: 
+      $script: adb uninstall com.example.flutter_application_example
+      $description: "Uninstall android"
+      $usage: rps uninstall android

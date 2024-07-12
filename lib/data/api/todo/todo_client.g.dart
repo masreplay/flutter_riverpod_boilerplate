@@ -77,3 +77,24 @@ class _TodoClient implements TodoClient {
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$todoClientHash() => r'387a9e35495d606ccb0f4269b953ab5992f8f8f9';
+
+/// See also [todoClient].
+@ProviderFor(todoClient)
+final todoClientProvider = AutoDisposeProvider<TodoClient>.internal(
+  todoClient,
+  name: r'todoClientProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$todoClientHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef TodoClientRef = AutoDisposeProviderRef<TodoClient>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

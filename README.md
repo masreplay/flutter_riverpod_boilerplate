@@ -9,9 +9,29 @@ A new Flutter project.
 dart pub global activate l10n_lint
 ```
 
-### run init one time
 ```bash
-l10n --**init**
+dart pub global activate rps
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### run init one tim
+```bash
+l10n --init
 ```
 
 
@@ -31,3 +51,5 @@ format code
 ```bash
 dart fix --apply && dart format -o write ./lib
 ```
+
+
