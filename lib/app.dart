@@ -10,13 +10,17 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = MainTheme();
     return MaterialApp(
+      // Change using state management
       themeMode: ThemeMode.dark,
       theme: theme.light(),
       darkTheme: theme.dark(),
-      home: const LoginPage(),
+
+      // Change using state management
       locale: const Locale('en'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+
+      home: const LoginPage(),
     );
   }
 }
