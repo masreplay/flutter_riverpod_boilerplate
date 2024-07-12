@@ -1,33 +1,55 @@
+import 'dart:math';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/gap.dart';
 import 'package:flutter_application_example/l10n/l10n.dart';
+import 'package:flutter_application_example/use_form_key.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:riverpod_hook_mutation/riverpod_hook_mutation.dart';
 
 import 'create_account_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginResponse {
+  final String message;
+  final String token;
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
+  const LoginResponse(
+    this.message,
+    this.token,
+  );
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late final TextEditingController emailController = TextEditingController();
-  late final TextEditingController passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-
-    super.dispose();
+Future<LoginResponse> login(String email, String password) {
+  if (Random().nextBool()) {
+    return Future.delayed(
+      const Duration(seconds: 2),
+      () => const LoginResponse(
+        'Login successful',
+        'token',
+      ),
+    );
+  } else {
+    return Future.delayed(
+      const Duration(seconds: 2),
+      () => throw Exception('Login failed'),
+    );
   }
+}
+
+class LoginPage extends HookWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
+
+    final formKey = useFormKey();
+    final email = useTextEditingController(text: "test@gmail.com");
+    final password = useTextEditingController(text: "test@gmail.com");
+
+    final loginMutation = useMutation<LoginResponse>();
 
     return Scaffold(
       body: SafeArea(
@@ -35,11 +57,19 @@ class _LoginPageState extends State<LoginPage> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(8.0),
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  // Show in dev mode only
+                  if (kDebugMode)
+                    loginMutation.when(
+                      idle: () => const Text('Idle'),
+                      data: (data) => Text(data.message),
+                      error: (error, stackTrace) => Text(error.toString()),
+                      loading: () => const ButtonLoading(),
+                    ),
                   Text(
                     l10n.loginPageTitle,
                     style: textTheme.headlineSmall?.copyWith(
@@ -53,28 +83,64 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const Gap(24),
                   _LoginEmailFormField(
-                    controller: emailController,
+                    controller: email,
                   ),
                   const Gap(12),
                   _LoginPasswordFormField(
-                    controller: passwordController,
+                    controller: password,
                   ),
                   const _LoginForgotPasswordButton(),
                   FilledButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        final String email = emailController.text;
-                        final String password = passwordController.text;
-                        print('Email: $email, Password: $password');
+                      if (formKey.currentState!.validate()) {
+                        loginMutation.future(
+                          login(email.text, password.text),
+                          data: (data) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(data.message),
+                              ),
+                            );
+
+                            
+                          },
+                          error: (error, stackTrace) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(error.toString()),
+                              ),
+                            );
+                          },
+                        );
                       }
                     },
-                    child: const Text('Login'),
+                    child: loginMutation.isLoading
+                        ? const ButtonLoading()
+                        : const Text('Login'),
                   ),
                   const _LoginCreateAccountButton(),
                 ],
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonLoading extends StatelessWidget {
+  const ButtonLoading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox.square(
+        dimension: 18.0,
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
     );
