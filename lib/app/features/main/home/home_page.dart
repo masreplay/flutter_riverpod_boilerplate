@@ -1,32 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/app/features/main/settings/settings_page.dart';
+import 'package:flutter_application_example/app/widgets/status/error_widget.dart';
+import 'package:flutter_application_example/app/widgets/status/loading_widget.dart';
+import 'package:flutter_application_example/data/api/todo/todo_client.dart';
+import 'package:flutter_application_example/data/api/todo/todo_response.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_page.g.dart';
 
-class HomeResponse {
-  final String message;
-  final String username;
-  final List<String> items;
-
-  const HomeResponse(
-    this.message,
-    this.username,
-    this.items,
-  );
-}
-
 @riverpod
-Future<HomeResponse> home(HomeRef ref) {
-  return Future.delayed(
-    const Duration(seconds: 2),
-    () => const HomeResponse(
-      'Welcome',
-      'username',
-      ['item1', 'item2', 'item3'],
-    ),
-  );
+Future<List<TodoResponse>> home(HomeRef ref) {
+  return ref.read(todoClientProvider).getTodos();
 }
 
 class HomePage extends HookConsumerWidget {
@@ -53,41 +38,31 @@ class HomePage extends HookConsumerWidget {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => ref.refresh(homeProvider.future),
-        child: state.when(
-          data: (data) {
-            return ListView.builder(
-              itemCount: data.items.length,
+      body: state.when(
+        data: (data) {
+          return RefreshIndicator(
+            onRefresh: () => ref.refresh(homeProvider.future),
+            child: ListView.builder(
+              itemCount: data.length,
               itemBuilder: (context, index) {
+                final item = data[index];
                 return ListTile(
-                  title: Text(data.items[index]),
+                  title: Text(item.title),
+                  leading: item.completed
+                      ? const Icon(Icons.check)
+                      : const Icon(Icons.close),
                 );
               },
-            );
-          },
-          error: (Object error, StackTrace stackTrace) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Error: $error'),
-                  ElevatedButton(
-                    onPressed: () {
-                      ref.invalidate(homeProvider);
-                    },
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            );
-          },
-          loading: () {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ),
+            ),
+          );
+        },
+        error: (error, stackTrace) {
+          return const AppErrorWidget();
+        },
+        loading: () {
+          // replace shimmer effect
+          return const AppLoadingWidget();
+        },
       ),
     );
   }

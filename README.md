@@ -15,41 +15,23 @@ dart pub global activate rps
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### run init one tim
+### run init one time for the next project
 ```bash
 l10n --init
 ```
 
-
-
 ### riverpod
 generate files
 ```bash
-flutter pub run build_runner build --delete-conflicting-outputs && flutter pub get
+rps g
 ```
 
-
 use `HookConsumerWidget` for all pages
-
 
 ### format code
 format code
 ```bash
-dart fix --apply && dart format -o write ./lib
+rps fix-format
 ```
 
 
