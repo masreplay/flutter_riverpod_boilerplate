@@ -1,4 +1,4 @@
-import 'package:flutter_application_example/shared_preferences.dart';
+import 'package:flutter_application_example/riverpod/shared_preferences.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'authentication_provider.g.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_example/email_form_field.dart';
-import 'package:flutter_application_example/gap.dart';
-import 'package:flutter_application_example/login_page.dart';
-import 'package:flutter_application_example/password_form_field.dart';
+import 'package:flutter_application_example/app/widgets/fields/email_form_field.dart';
+import 'package:flutter_application_example/app/widgets/gap.dart';
+import 'package:flutter_application_example/app/features/authentication/login/login_page.dart';
+import 'package:flutter_application_example/app/widgets/fields/password_form_field.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});

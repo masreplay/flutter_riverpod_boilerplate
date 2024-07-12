@@ -24,3 +24,10 @@ flutter pub run build_runner build --delete-conflicting-outputs && flutter pub g
 
 
 use `HookConsumerWidget` for all pages
+
+
+### format code
+format code
+```bash
+dart fix --apply && dart format -o write ./lib
+```

@@ -15,7 +15,7 @@ class EmailFormField extends StatelessWidget {
       validator: (value) {
         // regex for email validation
         final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    
+
         if (value == null || value.isEmpty) {
           return 'Please enter your email';
         } else if (!emailRegex.hasMatch(value)) {
