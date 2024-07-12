@@ -1,11 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/app/features/main/settings/settings_page.dart';
+import 'package:flutter_application_example/app/widgets/status/button_loading.dart';
 import 'package:flutter_application_example/app/widgets/status/error_widget.dart';
 import 'package:flutter_application_example/app/widgets/status/loading_widget.dart';
 import 'package:flutter_application_example/data/api/todo/todo_client.dart';
 import 'package:flutter_application_example/data/api/todo/todo_response.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:riverpod_hook_mutation/riverpod_hook_mutation.dart';
 
 part 'home_page.g.dart';
 
@@ -46,12 +50,7 @@ class HomePage extends HookConsumerWidget {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 final item = data[index];
-                return ListTile(
-                  title: Text(item.title),
-                  leading: item.completed
-                      ? const Icon(Icons.check)
-                      : const Icon(Icons.close),
-                );
+                return TodoListTile(item: item);
               },
             ),
           );
@@ -62,6 +61,69 @@ class HomePage extends HookConsumerWidget {
         loading: () {
           // replace shimmer effect
           return const AppLoadingWidget();
+        },
+      ),
+    );
+  }
+}
+
+class TodoListTile extends HookConsumerWidget {
+  const TodoListTile({
+    super.key,
+    required this.item,
+  });
+
+  final TodoResponse item;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final favoriteMutation = useMutation<bool>(data: item.favorite);
+    final favoriteMutation = useMutation<bool>(data: Random().nextBool());
+
+    return ListTile(
+      title: Text(item.title),
+      leading: item.completed
+          ? Icon(
+              Icons.check,
+              color: Theme.of(context).colorScheme.primary,
+            )
+          : Icon(
+              Icons.close,
+              color: Theme.of(context).colorScheme.error,
+            ),
+      trailing: favoriteMutation.maybeWhen(
+        loading: () => const SizedBox.square(
+          dimension: 48.0,
+          child: ButtonLoading(),
+        ),
+        orElse: () {
+          final isFavorite = favoriteMutation.data ?? false;
+          return IconButton(
+            onPressed: () {
+              favoriteMutation.future(
+                Future.delayed(const Duration(seconds: 1), () => !isFavorite),
+                data: (data) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        data ? 'Added to favorite' : 'Removed from favorite',
+                      ),
+                    ),
+                  );
+                },
+                error: (error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error: $error'),
+                    ),
+                  );
+                },
+              );
+            },
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+            ),
+          );
         },
       ),
     );
