@@ -685,14 +685,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
+  riverpod_hook_extensions:
+    dependency: "direct main"
+    description:
+      name: riverpod_hook_extensions
+      sha256: ce9502570e2b8e4ee7338149b5284750c7204e6277b0cfa94e1703005fc28a6e
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   riverpod_hook_mutation:
     dependency: "direct main"
     description:
       name: riverpod_hook_mutation
-      sha256: "276c7490c8033ac2718bedf634ad6c934c7575d94d792de535cc995c2e5ef515"
+      sha256: b7345b30d7261eebe53641cc0669b60914274a64dada4372d3f76fd7bd7359df
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1"
+    version: "0.0.2"
   riverpod_lint:
     dependency: "direct dev"
     description:

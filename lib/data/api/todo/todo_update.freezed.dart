@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'todo_request_body.dart';
+part of 'todo_update.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,8 @@ T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError('It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-TodoRequestBody _$TodoRequestBodyFromJson(Map<String, dynamic> json) {
-return _TodoRequestBody.fromJson(json);
-}
-
 /// @nodoc
-mixin _$TodoRequestBody {
+mixin _$TodoUpdate {
 
  String get title => throw _privateConstructorUsedError; bool get completed => throw _privateConstructorUsedError;
 
@@ -28,15 +24,15 @@ mixin _$TodoRequestBody {
 
 
 
-Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
 @JsonKey(ignore: true)
-$TodoRequestBodyCopyWith<TodoRequestBody> get copyWith => throw _privateConstructorUsedError;
+$TodoUpdateCopyWith<TodoUpdate> get copyWith => throw _privateConstructorUsedError;
 
 }
 
 /// @nodoc
-abstract class $TodoRequestBodyCopyWith<$Res>  {
-  factory $TodoRequestBodyCopyWith(TodoRequestBody value, $Res Function(TodoRequestBody) then) = _$TodoRequestBodyCopyWithImpl<$Res, TodoRequestBody>;
+abstract class $TodoUpdateCopyWith<$Res>  {
+  factory $TodoUpdateCopyWith(TodoUpdate value, $Res Function(TodoUpdate) then) = _$TodoUpdateCopyWithImpl<$Res, TodoUpdate>;
 @useResult
 $Res call({
  String title, bool completed
@@ -47,8 +43,8 @@ $Res call({
 }
 
 /// @nodoc
-class _$TodoRequestBodyCopyWithImpl<$Res,$Val extends TodoRequestBody> implements $TodoRequestBodyCopyWith<$Res> {
-  _$TodoRequestBodyCopyWithImpl(this._value, this._then);
+class _$TodoUpdateCopyWithImpl<$Res,$Val extends TodoUpdate> implements $TodoUpdateCopyWith<$Res> {
+  _$TodoUpdateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -67,8 +63,8 @@ as bool,
 
 
 /// @nodoc
-abstract class _$$TodoRequestBodyImplCopyWith<$Res> implements $TodoRequestBodyCopyWith<$Res> {
-  factory _$$TodoRequestBodyImplCopyWith(_$TodoRequestBodyImpl value, $Res Function(_$TodoRequestBodyImpl) then) = __$$TodoRequestBodyImplCopyWithImpl<$Res>;
+abstract class _$$TodoUpdateImplCopyWith<$Res> implements $TodoUpdateCopyWith<$Res> {
+  factory _$$TodoUpdateImplCopyWith(_$TodoUpdateImpl value, $Res Function(_$TodoUpdateImpl) then) = __$$TodoUpdateImplCopyWithImpl<$Res>;
 @override @useResult
 $Res call({
  String title, bool completed
@@ -79,13 +75,13 @@ $Res call({
 }
 
 /// @nodoc
-class __$$TodoRequestBodyImplCopyWithImpl<$Res> extends _$TodoRequestBodyCopyWithImpl<$Res, _$TodoRequestBodyImpl> implements _$$TodoRequestBodyImplCopyWith<$Res> {
-  __$$TodoRequestBodyImplCopyWithImpl(_$TodoRequestBodyImpl _value, $Res Function(_$TodoRequestBodyImpl) _then)
+class __$$TodoUpdateImplCopyWithImpl<$Res> extends _$TodoUpdateCopyWithImpl<$Res, _$TodoUpdateImpl> implements _$$TodoUpdateImplCopyWith<$Res> {
+  __$$TodoUpdateImplCopyWithImpl(_$TodoUpdateImpl _value, $Res Function(_$TodoUpdateImpl) _then)
       : super(_value, _then);
 
 
 @pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? completed = null,}) {
-  return _then(_$TodoRequestBodyImpl(
+  return _then(_$TodoUpdateImpl(
 title: null == title ? _value.title : title // ignore: cast_nullable_to_non_nullable
 as String,completed: null == completed ? _value.completed : completed // ignore: cast_nullable_to_non_nullable
 as bool,
@@ -96,35 +92,35 @@ as bool,
 }
 
 /// @nodoc
-@JsonSerializable()
 
-class _$TodoRequestBodyImpl  implements _TodoRequestBody {
-   _$TodoRequestBodyImpl({required this.title, required this.completed});
 
-  factory _$TodoRequestBodyImpl.fromJson(Map<String, dynamic> json) => _$$TodoRequestBodyImplFromJson(json);
+class _$TodoUpdateImpl  implements _TodoUpdate {
+  const _$TodoUpdateImpl({required this.title, required this.completed});
+
+  
 
 @override final  String title;
 @override final  bool completed;
 
 @override
 String toString() {
-  return 'TodoRequestBody(title: $title, completed: $completed)';
+  return 'TodoUpdate(title: $title, completed: $completed)';
 }
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _$TodoRequestBodyImpl&&(identical(other.title, title) || other.title == title)&&(identical(other.completed, completed) || other.completed == completed));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _$TodoUpdateImpl&&(identical(other.title, title) || other.title == title)&&(identical(other.completed, completed) || other.completed == completed));
 }
 
-@JsonKey(ignore: true)
+
 @override
 int get hashCode => Object.hash(runtimeType,title,completed);
 
 @JsonKey(ignore: true)
 @override
 @pragma('vm:prefer-inline')
-_$$TodoRequestBodyImplCopyWith<_$TodoRequestBodyImpl> get copyWith => __$$TodoRequestBodyImplCopyWithImpl<_$TodoRequestBodyImpl>(this, _$identity);
+_$$TodoUpdateImplCopyWith<_$TodoUpdateImpl> get copyWith => __$$TodoUpdateImplCopyWithImpl<_$TodoUpdateImpl>(this, _$identity);
 
 
 
@@ -132,21 +128,18 @@ _$$TodoRequestBodyImplCopyWith<_$TodoRequestBodyImpl> get copyWith => __$$TodoRe
 
 
 
-@override
-Map<String, dynamic> toJson() {
-  return _$$TodoRequestBodyImplToJson(this, );
-}
+
 }
 
 
-abstract class _TodoRequestBody implements TodoRequestBody {
-   factory _TodoRequestBody({required final  String title, required final  bool completed}) = _$TodoRequestBodyImpl;
+abstract class _TodoUpdate implements TodoUpdate {
+  const factory _TodoUpdate({required final  String title, required final  bool completed}) = _$TodoUpdateImpl;
   
 
-  factory _TodoRequestBody.fromJson(Map<String, dynamic> json) = _$TodoRequestBodyImpl.fromJson;
+  
 
 @override  String get title;@override  bool get completed;
 @override @JsonKey(ignore: true)
-_$$TodoRequestBodyImplCopyWith<_$TodoRequestBodyImpl> get copyWith => throw _privateConstructorUsedError;
+_$$TodoUpdateImplCopyWith<_$TodoUpdateImpl> get copyWith => throw _privateConstructorUsedError;
 
 }
