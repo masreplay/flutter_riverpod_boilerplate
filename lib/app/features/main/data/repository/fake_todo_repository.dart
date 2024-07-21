@@ -27,4 +27,14 @@ class FakeTodoRepository implements TodoRepository {
     _todos.removeWhere((element) => element.id == id);
     return const MessageEntity(message: 'Deleted');
   }
+
+  @override
+  Future<bool> toggle(int id) {
+    final index = _todos.indexWhere((element) => element.id == id);
+    if (index == -1) {
+      return Future.value(false);
+    }
+    _todos[index] = _todos[index].copyWith(completed: !_todos[index].completed);
+    return Future.delayed(const Duration(seconds: 1), () => true);
+  }
 }

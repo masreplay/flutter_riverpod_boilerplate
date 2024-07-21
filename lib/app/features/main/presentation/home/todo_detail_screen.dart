@@ -17,21 +17,11 @@ class Todo extends _$Todo {
     return ref.read(todoRepositoryProvider).getDetails(id);
   }
 
-  Future<bool> toggleStatus() async {
-    // final response = await ref.read(todoClientProvider).toggle(id);
-    // ref.invalidateSelf();
-    // return response;
-
-    // fake
-    return Future.delayed(const Duration(seconds: 1), () {
-      return state.maybeWhen(
-        data: (data) {
-          state = AsyncData(data.copyWith(completed: !data.completed));
-          return !data.completed;
-        },
-        orElse: () => false,
-      );
-    });
+  Future<bool> toggleStatus(int id) async {
+    final response = await ref.read(todoRepositoryProvider).toggle(id);
+    ref.invalidateSelf();
+    await future;
+    return response;
   }
 
   Future<TodoEntity> updateTodo(TodoUpdate todo) async {
@@ -94,7 +84,7 @@ class TodoDetailScreen extends HookConsumerWidget {
               Text(data.completed.toString()),
               FilledButton(
                 onPressed: () {
-                  completed(notifier.toggleStatus());
+                  completed(notifier.toggleStatus(data.id));
                 },
                 child: const Text('Toggle Status'),
               ),

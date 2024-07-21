@@ -28,4 +28,8 @@ class TodoRepository {
   Future<MessageEntity> delete(int id) {
     throw UnimplementedError();
   }
+
+  Future<bool> toggle(int id) {
+    throw UnimplementedError();
+  }
 }
