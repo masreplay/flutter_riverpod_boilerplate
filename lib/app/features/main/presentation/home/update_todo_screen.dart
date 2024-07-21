@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_example/app/features/main/home/todo_detail_screen.dart';
+import 'package:flutter_application_example/app/features/main/data/entities/todo_entity.dart';
+import 'package:flutter_application_example/app/features/main/presentation/home/todo_detail_screen.dart';
 import 'package:flutter_application_example/app/widgets/gap.dart';
 import 'package:flutter_application_example/app/widgets/status/button_loading.dart';
-import 'package:flutter_application_example/data/api/todo/todo_response.dart';
 import 'package:flutter_application_example/data/api/todo/todo_update.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,7 +23,7 @@ class UpdateTodoScreen extends HookConsumerWidget {
     final state = ref.watch(provider);
 
     final formKey = useFormKey();
-    final mutation = useMutation<TodoResponse>();
+    final mutation = useMutation<TodoEntity>();
 
     return Scaffold(
       appBar: AppBar(

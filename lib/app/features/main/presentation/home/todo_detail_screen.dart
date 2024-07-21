@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_example/app/features/main/home/update_todo_screen.dart';
-import 'package:flutter_application_example/data/api/todo/todo_client.dart';
-import 'package:flutter_application_example/data/api/todo/todo_response.dart';
+import 'package:flutter_application_example/app/features/main/data/entities/todo_entity.dart';
+import 'package:flutter_application_example/app/features/main/data/repositories/todo_repository.dart';
+import 'package:flutter_application_example/app/features/main/presentation/home/update_todo_screen.dart';
+import 'package:flutter_application_example/app/widgets/status/loading_widget.dart';
 import 'package:flutter_application_example/data/api/todo/todo_update.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,8 +13,8 @@ part 'todo_detail_screen.g.dart';
 @riverpod
 class Todo extends _$Todo {
   @override
-  Future<TodoResponse> build(int id) {
-    return ref.read(todoClientProvider).getTodo(id);
+  Future<TodoEntity> build(int id) {
+    return ref.read(todoRepositoryProvider).getTodo(id);
   }
 
   Future<bool> toggleStatus() async {
@@ -33,12 +34,13 @@ class Todo extends _$Todo {
     });
   }
 
-  Future<TodoResponse> updateTodo(TodoUpdate todo) async {
+  Future<TodoEntity> updateTodo(TodoUpdate todo) async {
     // fake
     return Future.delayed(const Duration(seconds: 1), () {
       return state.maybeWhen(
         data: (data) {
-          final newData = data.copyWith(title: todo.title, completed: todo.completed);
+          final newData =
+              data.copyWith(title: todo.title, completed: todo.completed);
           state = AsyncData(newData);
           return newData;
         },
@@ -100,9 +102,7 @@ class TodoDetailScreen extends HookConsumerWidget {
           );
         },
         loading: () {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const AppLoadingWidget();
         },
         error: (error, stackTrace) {
           return const Center(
