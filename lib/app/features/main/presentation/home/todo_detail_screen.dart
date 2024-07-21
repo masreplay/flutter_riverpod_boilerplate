@@ -24,21 +24,17 @@ class Todo extends _$Todo {
     return response;
   }
 
-  Future<TodoEntity> updateTodo(TodoUpdate todo) async {
-    // fake
-    return Future.delayed(const Duration(seconds: 1), () {
-      return state.maybeWhen(
-        data: (data) {
-          final newData =
-              data.copyWith(title: todo.title, completed: todo.completed);
-          state = AsyncData(newData);
-          return newData;
-        },
-        orElse: () {
-          throw Exception('Error');
-        },
-      );
-    });
+  Future<TodoEntity> updateTodo(
+    int id,
+    TodoUpdate todo,
+  ) async {
+    final response = await ref.read(todoRepositoryProvider).update(
+          id,
+          todo,
+        );
+    ref.invalidateSelf();
+    await future;
+    return response;
   }
 }
 

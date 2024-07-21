@@ -1,6 +1,7 @@
 import 'package:flutter_application_example/app/features/main/data/entity/message_entity.dart';
 import 'package:flutter_application_example/data/api/todo/todo_client.dart';
 import 'package:flutter_application_example/app/features/main/data/entity/todo_entity.dart';
+import 'package:flutter_application_example/data/api/todo/todo_update.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'todo_repository.g.dart';
@@ -30,6 +31,13 @@ class TodoRepository {
   }
 
   Future<bool> toggle(int id) {
+    throw UnimplementedError();
+  }
+
+  Future<TodoEntity> update(
+    int id,
+    TodoUpdate todo,
+  ) {
     throw UnimplementedError();
   }
 }

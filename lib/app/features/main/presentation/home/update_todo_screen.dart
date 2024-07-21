@@ -64,7 +64,10 @@ class UpdateTodoScreen extends HookConsumerWidget {
 
                         final notifier = ref.read(provider.notifier);
                         mutation.future(
-                          notifier.updateTodo(todo),
+                          notifier.updateTodo(
+                            id,
+                            todo,
+                          ),
                           data: (data) {
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(

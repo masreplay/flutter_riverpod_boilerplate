@@ -1,6 +1,7 @@
 import 'package:flutter_application_example/app/features/main/data/entity/message_entity.dart';
 import 'package:flutter_application_example/app/features/main/data/entity/todo_entity.dart';
 import 'package:flutter_application_example/app/features/main/data/repository/todo_repository.dart';
+import 'package:flutter_application_example/data/api/todo/todo_update.dart';
 
 class FakeTodoRepository implements TodoRepository {
   final _todos = [
@@ -36,5 +37,19 @@ class FakeTodoRepository implements TodoRepository {
     }
     _todos[index] = _todos[index].copyWith(completed: !_todos[index].completed);
     return Future.delayed(const Duration(seconds: 1), () => true);
+  }
+
+  @override
+  Future<TodoEntity> update(
+    int id,
+    TodoUpdate todo,
+  ) {
+    final index = _todos.indexWhere((element) => element.id == id);
+    if (index == -1) {
+      throw Exception('Not found');
+    }
+    _todos[index] =
+        _todos[index].copyWith(title: todo.title, completed: todo.completed);
+    return Future.delayed(const Duration(seconds: 1), () => _todos[index]);
   }
 }
