@@ -6,7 +6,7 @@ part of 'todo_detail_screen.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todoHash() => r'e2916669ea5b164d3334239931561f3548663486';
+String _$todoHash() => r'd60b1cf50134fbbed800fdd2cdcc45dbbeb8d135';
 
 /// Copied from Dart SDK
 class _SystemHash {

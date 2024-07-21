@@ -1,13 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_example/app/features/main/data/entity/message_entity.dart';
 import 'package:flutter_application_example/app/features/main/presentation/home/todo_detail_screen.dart';
 import 'package:flutter_application_example/app/features/main/presentation/settings/settings_page.dart';
 import 'package:flutter_application_example/app/widgets/status/button_loading.dart';
 import 'package:flutter_application_example/app/widgets/status/error_widget.dart';
 import 'package:flutter_application_example/app/widgets/status/loading_widget.dart';
-import 'package:flutter_application_example/app/features/main/data/entities/todo_entity.dart';
-import 'package:flutter_application_example/app/features/main/data/repositories/todo_repository.dart';
+import 'package:flutter_application_example/app/features/main/data/entity/todo_entity.dart';
+import 'package:flutter_application_example/app/features/main/data/repository/todo_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod_hook_mutation/riverpod_hook_mutation.dart';
@@ -18,17 +19,18 @@ part 'home_page.g.dart';
 class Home extends _$Home {
   @override
   Future<List<TodoEntity>> build() {
-    return ref.read(todoRepositoryProvider).getTodos();
+    return ref.read(todoRepositoryProvider).get();
   }
 
-  Future<void> delete(int id) async {
-    await ref.read(todoRepositoryProvider).delete(id);
+  Future<MessageEntity> delete(int id) async {
+    final response = await ref.read(todoRepositoryProvider).delete(id);
     ref.invalidateSelf();
 
     // (Optional) We can then wait for the new state to be computed.
     // This ensures "delelte" does not complete until the new state is available.
     // https://riverpod.dev/docs/essentials/side_effects#using-refinvalidateself-to-refresh-the-provider
     await future;
+    return response;
   }
 }
 
@@ -93,7 +95,7 @@ class TodoListTile extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final favoriteMutation = useMutation<bool>(data: item.favorite);
     final favoriteMutation = useMutation<bool>(data: Random().nextBool());
-    final deleteMutation = useMutation<void>();
+    final deleteMutation = useMutation<MessageEntity>();
     final notifier = ref.read(homeProvider.notifier);
 
     return Dismissible(
@@ -101,10 +103,10 @@ class TodoListTile extends HookConsumerWidget {
       confirmDismiss: (direction) async {
         return deleteMutation.future<bool>(
           notifier.delete(item.id),
-          data: (_) {
+          data: (data) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Deleted ${item.title}'),
+                content: Text(data.message),
               ),
             );
             return true;

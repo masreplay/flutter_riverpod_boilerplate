@@ -1,5 +1,6 @@
-import 'package:flutter_application_example/app/features/main/data/entities/todo_entity.dart';
-import 'package:flutter_application_example/app/features/main/data/repositories/todo_repository.dart';
+import 'package:flutter_application_example/app/features/main/data/entity/message_entity.dart';
+import 'package:flutter_application_example/app/features/main/data/entity/todo_entity.dart';
+import 'package:flutter_application_example/app/features/main/data/repository/todo_repository.dart';
 
 class FakeTodoRepository implements TodoRepository {
   final _todos = [
@@ -9,12 +10,12 @@ class FakeTodoRepository implements TodoRepository {
   ];
 
   @override
-  Future<List<TodoEntity>> getTodos() async {
+  Future<List<TodoEntity>> get() async {
     return Future.delayed(const Duration(seconds: 1), () => _todos);
   }
 
   @override
-  Future<TodoEntity> getTodo(int id) {
+  Future<TodoEntity> getDetails(int id) {
     return Future.delayed(
       const Duration(seconds: 1),
       () => _todos.firstWhere((element) => element.id == id),
@@ -22,7 +23,8 @@ class FakeTodoRepository implements TodoRepository {
   }
 
   @override
-  Future<void> delete(int id) async {
+  Future<MessageEntity> delete(int id) async {
     _todos.removeWhere((element) => element.id == id);
+    return const MessageEntity(message: 'Deleted');
   }
 }

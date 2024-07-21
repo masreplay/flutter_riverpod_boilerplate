@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_example/app/features/main/data/entities/todo_entity.dart';
-import 'package:flutter_application_example/app/features/main/data/repositories/todo_repository.dart';
+import 'package:flutter_application_example/app/features/main/data/entity/todo_entity.dart';
+import 'package:flutter_application_example/app/features/main/data/repository/todo_repository.dart';
 import 'package:flutter_application_example/app/features/main/presentation/home/update_todo_screen.dart';
 import 'package:flutter_application_example/app/widgets/status/loading_widget.dart';
 import 'package:flutter_application_example/data/api/todo/todo_update.dart';
@@ -14,7 +14,7 @@ part 'todo_detail_screen.g.dart';
 class Todo extends _$Todo {
   @override
   Future<TodoEntity> build(int id) {
-    return ref.read(todoRepositoryProvider).getTodo(id);
+    return ref.read(todoRepositoryProvider).getDetails(id);
   }
 
   Future<bool> toggleStatus() async {
