@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/app/features/main/data/entity/todo_entity.dart';
-import 'package:flutter_application_example/app/features/main/presentation/home/todo_detail_screen.dart';
+import 'package:flutter_application_example/app/features/main/pages/home/todo_detail_screen.dart';
 import 'package:flutter_application_example/app/widgets/gap.dart';
 import 'package:flutter_application_example/app/widgets/status/button_loading.dart';
 import 'package:flutter_application_example/data/api/todo/todo_update.dart';

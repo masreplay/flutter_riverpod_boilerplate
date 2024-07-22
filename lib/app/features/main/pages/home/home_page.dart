@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_example/app/features/main/data/entity/message_entity.dart';
-import 'package:flutter_application_example/app/features/main/presentation/home/todo_detail_screen.dart';
-import 'package:flutter_application_example/app/features/main/presentation/settings/settings_page.dart';
+import 'package:flutter_application_example/app/features/main/pages/home/todo_detail_screen.dart';
+import 'package:flutter_application_example/app/features/main/pages/settings/settings_page.dart';
 import 'package:flutter_application_example/app/widgets/status/button_loading.dart';
 import 'package:flutter_application_example/app/widgets/status/error_widget.dart';
 import 'package:flutter_application_example/app/widgets/status/loading_widget.dart';

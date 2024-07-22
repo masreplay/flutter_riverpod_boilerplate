@@ -7,7 +7,8 @@ part 'todo_dao.g.dart';
 
 @riverpod
 TodoDAO todoDAO(TodoDAORef ref) {
-  return TodoDAO(ref.read(appDatabaseProvider));
+  final appDatabase = ref.read(appDatabaseProvider);
+  return TodoDAO(appDatabase);
 }
 
 class TodoDAO {
@@ -19,6 +20,11 @@ class TodoDAO {
     return (_db.select(_db.todoSchema)
           ..orderBy([(t) => OrderingTerm(expression: t.createdAt)]))
         .get();
+  }
+
+  Future<TodoSchemaData> getTodoById(int id) async {
+    return (_db.select(_db.todoSchema)..where((t) => t.id.equals(id)))
+        .getSingle();
   }
 
   Future<void> insertTodos(List<TodoResponse> todos) async {
@@ -35,9 +41,5 @@ class TodoDAO {
         ).toList(),
       ),
     );
-  }
-
-  Future<void> insertTodo(TodoSchemaCompanion todo) async {
-    await _db.into(_db.todoSchema).insert(todo);
   }
 }
