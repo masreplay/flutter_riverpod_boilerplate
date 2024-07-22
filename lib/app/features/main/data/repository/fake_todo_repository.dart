@@ -16,7 +16,7 @@ class FakeTodoRepository implements TodoRepository {
   }
 
   @override
-  Future<TodoEntity> getDetails(int id) {
+  Future<TodoEntity> getDetail(int id) {
     return Future.delayed(
       const Duration(seconds: 1),
       () => _todos.firstWhere((element) => element.id == id),

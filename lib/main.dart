@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_example/app/features/main/data/repository/fake_todo_repository.dart';
-import 'package:flutter_application_example/app/features/main/data/repository/todo_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +16,7 @@ Future<void> main() async {
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-        todoRepositoryProvider.overrideWithValue(FakeTodoRepository()),
+        // todoRepositoryProvider.overrideWithValue(FakeTodoRepository()),
       ],
       child: const MainApp(),
     ),

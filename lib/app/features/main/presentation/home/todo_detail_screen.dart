@@ -14,7 +14,7 @@ part 'todo_detail_screen.g.dart';
 class Todo extends _$Todo {
   @override
   Future<TodoEntity> build(int id) {
-    return ref.read(todoRepositoryProvider).getDetails(id);
+    return ref.read(todoRepositoryProvider).getDetail(id);
   }
 
   Future<bool> toggleStatus(int id) async {

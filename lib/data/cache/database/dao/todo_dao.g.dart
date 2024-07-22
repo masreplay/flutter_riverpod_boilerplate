@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'home_page.dart';
+part of 'todo_dao.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeHash() => r'77550c4cc5e7a2a59e60a87caa4f6de14175c746';
+String _$todoDAOHash() => r'908b2edfd9c92287c01212de31450fbdcaa762b9';
 
-/// See also [Home].
-@ProviderFor(Home)
-final homeProvider =
-    AutoDisposeAsyncNotifierProvider<Home, List<TodoEntity>>.internal(
-  Home.new,
-  name: r'homeProvider',
+/// See also [todoDAO].
+@ProviderFor(todoDAO)
+final todoDAOProvider = AutoDisposeProvider<TodoDAO>.internal(
+  todoDAO,
+  name: r'todoDAOProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$homeHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$todoDAOHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Home = AutoDisposeAsyncNotifier<List<TodoEntity>>;
+typedef TodoDAORef = AutoDisposeProviderRef<TodoDAO>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

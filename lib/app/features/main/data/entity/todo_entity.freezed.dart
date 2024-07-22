@@ -96,8 +96,8 @@ as bool,
 /// @nodoc
 
 
-class _$TodoEntityImpl  implements _TodoEntity {
-  const _$TodoEntityImpl({required this.id, required this.title, required this.completed});
+class _$TodoEntityImpl extends _TodoEntity  {
+  const _$TodoEntityImpl({required this.id, required this.title, required this.completed}): super._();
 
   
 
@@ -135,9 +135,9 @@ _$$TodoEntityImplCopyWith<_$TodoEntityImpl> get copyWith => __$$TodoEntityImplCo
 }
 
 
-abstract class _TodoEntity implements TodoEntity {
+abstract class _TodoEntity extends TodoEntity {
   const factory _TodoEntity({required final  int id, required final  String title, required final  bool completed}) = _$TodoEntityImpl;
-  
+  const _TodoEntity._(): super._();
 
   
 
