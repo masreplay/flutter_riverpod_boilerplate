@@ -24,7 +24,7 @@ abstract class TodoLds {
 class TodoDriftLds implements TodoLds {
   final TodoDao _dao;
 
-  TodoDriftLds(this._dao);
+  const TodoDriftLds(this._dao);
 
   @override
   Future<List<TodoSchemaData>> getTodos() {

@@ -6,12 +6,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'todo_remote_data_source.g.dart';
 
 @riverpod
-TodoRDS todoRDS(TodoRDSRef ref) {
+TodoRds todoRds(TodoRdsRef ref) {
   final todoClient = ref.read(todoClientProvider);
-  return TodoApiRDS(todoClient);
+  return TodoApiRds(todoClient);
 }
 
-abstract class TodoRDS {
+abstract class TodoRds {
   Future<List<TodoResponse>> getTodos();
 
   Future<TodoResponse> getTodo(
@@ -24,10 +24,11 @@ abstract class TodoRDS {
   );
 }
 
-class TodoApiRDS implements TodoRDS {
+class TodoApiRds implements TodoRds {
   final TodoClient _client;
 
-  TodoApiRDS(this._client);
+  const TodoApiRds(this._client);
+  
   @override
   Future<List<TodoResponse>> getTodos() {
     return _client.getTodos();

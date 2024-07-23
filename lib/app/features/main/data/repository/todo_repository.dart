@@ -9,22 +9,24 @@ part 'todo_repository.g.dart';
 
 @riverpod
 TodoRepository todoRepository(TodoRepositoryRef ref) {
-  final todoRDS = ref.read(todoRDSProvider);
-  final todoLDS = ref.read(todoLdsProvider);
-  return TodoRepository(todoRDS, todoLDS);
+  final todoRds = ref.read(todoRdsProvider);
+  final todoLds = ref.read(todoLdsProvider);
+  return TodoRepository(todoRds, todoLds);
 }
 
 class TodoRepository {
-  final TodoRDS _remoteDataSource;
+  final TodoRds _remoteDataSource;
+
   final TodoLds _localDataSource;
 
-  TodoRepository(this._remoteDataSource, this._localDataSource);
+  const TodoRepository(this._remoteDataSource, this._localDataSource);
 
   Future<List<TodoEntity>> get() async {
     try {
       final todos = await _remoteDataSource.getTodos();
       final list = todos.map(TodoEntity.fromResponse).toList();
-      await _localDataSource.insertTodos(list.map((e) => e.toSchemaData()).toList());
+      await _localDataSource
+          .insertTodos(list.map((e) => e.toSchemaData()).toList());
       return list;
     } catch (e) {
       final todos = await _localDataSource.getTodos();
@@ -34,6 +36,7 @@ class TodoRepository {
 
   Future<TodoEntity> getDetail(int id) async {
     final response = await _remoteDataSource.getTodo(id);
+    // TODO(Mortadha.Naser): Read from local data source if remote fails
     return TodoEntity.fromResponse(response);
   }
 
