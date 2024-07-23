@@ -11,25 +11,23 @@ import 'package:flutter_application_example/app/features/main/data/entity/todo_e
 import 'package:flutter_application_example/app/features/main/data/repository/todo_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:riverpod_hook_extensions/riverpod_hook_extensions.dart';
 import 'package:riverpod_hook_mutation/riverpod_hook_mutation.dart';
 
 part 'home_page.g.dart';
 
 @riverpod
 class Home extends _$Home {
+  TodoRepository get _repository => ref.read(todoRepositoryProvider);
+
   @override
   Future<List<TodoEntity>> build() {
-    return ref.read(todoRepositoryProvider).get();
+    return _repository.get();
   }
 
   Future<MessageEntity> delete(int id) async {
-    final response = await ref.read(todoRepositoryProvider).delete(id);
-    ref.invalidateSelf();
-
-    // (Optional) We can then wait for the new state to be computed.
-    // This ensures "delelte" does not complete until the new state is available.
-    // https://riverpod.dev/docs/essentials/side_effects#using-refinvalidateself-to-refresh-the-provider
-    await future;
+    final response = await _repository.delete(id);
+    await refreshSelf();
     return response;
   }
 }
