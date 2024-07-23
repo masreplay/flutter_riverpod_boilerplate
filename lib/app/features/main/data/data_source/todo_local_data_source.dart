@@ -18,6 +18,9 @@ abstract class TodoLds {
 
   /// Inserts a list of todos into the local storage.
   Future<void> insertTodos(List<TodoSchemaCompanion> list);
+
+  /// Retrieves a todo from the local storage.
+  Future<TodoSchemaData> getTodo(int id);
 }
 
 /// A concrete implementation of the [TodoLds] contract using the [TodoDao] for data access.
@@ -34,5 +37,10 @@ class TodoDriftLds implements TodoLds {
   @override
   Future<void> insertTodos(List<TodoSchemaCompanion> list) {
     return _dao.insertTodos(list);
+  }
+
+  @override
+  Future<TodoSchemaData> getTodo(int id) {
+    return _dao.getTodo(id);
   }
 }

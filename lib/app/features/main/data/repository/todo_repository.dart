@@ -35,9 +35,13 @@ class TodoRepository {
   }
 
   Future<TodoEntity> getDetail(int id) async {
-    final response = await _remoteDataSource.getTodo(id);
-    // TODO(Mortadha.Naser): Read from local data source if remote fails
-    return TodoEntity.fromResponse(response);
+    try {
+      final response = await _remoteDataSource.getTodo(id);
+      return TodoEntity.fromResponse(response);
+    } catch (e) {
+      final todo = await _localDataSource.getTodo(id);
+      return TodoEntity.fromSchemaData(todo);
+    }
   }
 
   Future<MessageEntity> delete(int id) {
