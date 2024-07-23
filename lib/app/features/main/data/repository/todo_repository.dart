@@ -14,13 +14,17 @@ TodoRepository todoRepository(TodoRepositoryRef ref) {
   return TodoRepository(todoRds, todoLds);
 }
 
+/// A repository class that handles the retrieval and manipulation of Todo data.
 class TodoRepository {
   final TodoRds _remoteDataSource;
-
   final TodoLds _localDataSource;
 
   const TodoRepository(this._remoteDataSource, this._localDataSource);
 
+  /// Retrieves a list of TodoEntity objects.
+  ///
+  /// If the remote data source is available, it retrieves the data from there.
+  /// If an error occurs, it falls back to retrieving the data from the local data source.
   Future<List<TodoEntity>> get() async {
     try {
       final todos = await _remoteDataSource.getTodos();
@@ -34,6 +38,10 @@ class TodoRepository {
     }
   }
 
+  /// Retrieves a TodoEntity object with the specified ID.
+  ///
+  /// If the remote data source is available, it retrieves the data from there.
+  /// If an error occurs, it falls back to retrieving the data from the local data source.
   Future<TodoEntity> getDetail(int id) async {
     try {
       final response = await _remoteDataSource.getTodo(id);
@@ -44,14 +52,17 @@ class TodoRepository {
     }
   }
 
+  /// Deletes a TodoEntity object with the specified ID.
   Future<MessageEntity> delete(int id) {
     throw UnimplementedError();
   }
 
+  /// Toggles the completed status of a TodoEntity object with the specified ID.
   Future<bool> toggle(int id) {
     throw UnimplementedError();
   }
 
+  /// Updates a TodoEntity object with the specified ID.
   Future<TodoEntity> update(
     int id,
     TodoUpdate todo,

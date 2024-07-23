@@ -10,19 +10,21 @@ AppDatabase appDatabase(AppDatabaseRef ref) {
   return AppDatabase();
 }
 
+/// Represents the application database.
+/// This class extends the generated `_$AppDatabase` class from Drift.
+/// It defines the schema version and the method to open a database connection.
 @DriftDatabase(tables: [TodoSchema])
 class AppDatabase extends _$AppDatabase {
-  // After generating code, this class needs to define a `schemaVersion` getter
-  // and a constructor telling drift where the database should be stored.
-  // These are described in the getting started guide: https://drift.simonbinder.eu/getting-started/#open
+  /// Creates an instance of the [AppDatabase] class.
+  /// It calls the constructor of the superclass [_$AppDatabase] and passes the opened database connection.
   AppDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;
 
+  /// Opens a connection to the database.
+  /// It uses the `driftDatabase` function from `package:drift_flutter` to store the database in the application documents directory.
   static QueryExecutor _openConnection() {
-    // `driftDatabase` from `package:drift_flutter` stores the database in
-    // `getApplicationDocumentsDirectory()`.
     return driftDatabase(name: 'flutter_riverpod_boilerplate');
   }
 }

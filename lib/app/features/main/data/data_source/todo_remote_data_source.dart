@@ -10,25 +10,29 @@ TodoRds todoRds(TodoRdsRef ref) {
   final todoClient = ref.read(todoClientProvider);
   return TodoApiRds(todoClient);
 }
-
+/// Abstract class representing a remote data source for todos.
 abstract class TodoRds {
+  /// Retrieves a list of todos.
   Future<List<TodoResponse>> getTodos();
 
+  /// Retrieves a todo by its ID.
   Future<TodoResponse> getTodo(
     int id,
   );
 
+  /// Creates a new todo.
   Future<TodoResponse> createTodo(
     String title,
     TodoRequestBody body,
   );
 }
 
+/// Implementation of the [TodoRds] interface using an API client.
 class TodoApiRds implements TodoRds {
   final TodoClient _client;
 
   const TodoApiRds(this._client);
-  
+
   @override
   Future<List<TodoResponse>> getTodos() {
     return _client.getTodos();
