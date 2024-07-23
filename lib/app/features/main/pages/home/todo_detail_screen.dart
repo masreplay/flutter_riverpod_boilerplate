@@ -12,13 +12,14 @@ part 'todo_detail_screen.g.dart';
 
 @riverpod
 class Todo extends _$Todo {
+  TodoRepository get _repository => ref.read(todoRepositoryProvider);
   @override
   Future<TodoEntity> build(int id) {
-    return ref.read(todoRepositoryProvider).getDetail(id);
+    return _repository.getDetail(id);
   }
 
   Future<bool> toggleStatus(int id) async {
-    final response = await ref.read(todoRepositoryProvider).toggle(id);
+    final response = await _repository.toggle(id);
     ref.invalidateSelf();
     await future;
     return response;

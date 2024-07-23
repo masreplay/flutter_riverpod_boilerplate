@@ -34,6 +34,7 @@ class TodoEntity with _$TodoEntity {
 
   TodoSchemaCompanion toSchemaData() {
     return TodoSchemaCompanion.insert(
+      serverId: id,
       title: title,
       completed: Value(completed),
     );

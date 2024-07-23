@@ -27,6 +27,6 @@ class TodoDao {
   }
 
   Future<void> insertTodos(List<TodoSchemaCompanion> list) {
-    return _db.batch((batch) => batch.insertAll(_db.todoSchema, list));
+    return _db.batch((batch) => batch.insertAllOnConflictUpdate(_db.todoSchema, list));
   }
 }

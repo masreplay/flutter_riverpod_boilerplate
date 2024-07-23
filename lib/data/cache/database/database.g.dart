@@ -18,6 +18,14 @@ class $TodoSchemaTable extends TodoSchema
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _serverIdMeta =
+      const VerificationMeta('serverId');
+  @override
+  late final GeneratedColumn<int> serverId = GeneratedColumn<int>(
+      'server_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
@@ -42,7 +50,8 @@ class $TodoSchemaTable extends TodoSchema
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
   @override
-  List<GeneratedColumn> get $columns => [id, title, completed, createdAt];
+  List<GeneratedColumn> get $columns =>
+      [id, serverId, title, completed, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -55,6 +64,12 @@ class $TodoSchemaTable extends TodoSchema
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('server_id')) {
+      context.handle(_serverIdMeta,
+          serverId.isAcceptableOrUnknown(data['server_id']!, _serverIdMeta));
+    } else if (isInserting) {
+      context.missing(_serverIdMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -81,6 +96,8 @@ class $TodoSchemaTable extends TodoSchema
     return TodoSchemaData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      serverId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}server_id'])!,
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       completed: attachedDatabase.typeMapping
@@ -98,11 +115,13 @@ class $TodoSchemaTable extends TodoSchema
 
 class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
   final int id;
+  final int serverId;
   final String title;
   final bool completed;
   final DateTime createdAt;
   const TodoSchemaData(
       {required this.id,
+      required this.serverId,
       required this.title,
       required this.completed,
       required this.createdAt});
@@ -110,6 +129,7 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['server_id'] = Variable<int>(serverId);
     map['title'] = Variable<String>(title);
     map['completed'] = Variable<bool>(completed);
     map['created_at'] = Variable<DateTime>(createdAt);
@@ -119,6 +139,7 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
   TodoSchemaCompanion toCompanion(bool nullToAbsent) {
     return TodoSchemaCompanion(
       id: Value(id),
+      serverId: Value(serverId),
       title: Value(title),
       completed: Value(completed),
       createdAt: Value(createdAt),
@@ -130,6 +151,7 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TodoSchemaData(
       id: serializer.fromJson<int>(json['id']),
+      serverId: serializer.fromJson<int>(json['serverId']),
       title: serializer.fromJson<String>(json['title']),
       completed: serializer.fromJson<bool>(json['completed']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -140,6 +162,7 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'serverId': serializer.toJson<int>(serverId),
       'title': serializer.toJson<String>(title),
       'completed': serializer.toJson<bool>(completed),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -147,9 +170,14 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
   }
 
   TodoSchemaData copyWith(
-          {int? id, String? title, bool? completed, DateTime? createdAt}) =>
+          {int? id,
+          int? serverId,
+          String? title,
+          bool? completed,
+          DateTime? createdAt}) =>
       TodoSchemaData(
         id: id ?? this.id,
+        serverId: serverId ?? this.serverId,
         title: title ?? this.title,
         completed: completed ?? this.completed,
         createdAt: createdAt ?? this.createdAt,
@@ -157,6 +185,7 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
   TodoSchemaData copyWithCompanion(TodoSchemaCompanion data) {
     return TodoSchemaData(
       id: data.id.present ? data.id.value : this.id,
+      serverId: data.serverId.present ? data.serverId.value : this.serverId,
       title: data.title.present ? data.title.value : this.title,
       completed: data.completed.present ? data.completed.value : this.completed,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
@@ -167,6 +196,7 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
   String toString() {
     return (StringBuffer('TodoSchemaData(')
           ..write('id: $id, ')
+          ..write('serverId: $serverId, ')
           ..write('title: $title, ')
           ..write('completed: $completed, ')
           ..write('createdAt: $createdAt')
@@ -175,12 +205,13 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, title, completed, createdAt);
+  int get hashCode => Object.hash(id, serverId, title, completed, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TodoSchemaData &&
           other.id == this.id &&
+          other.serverId == this.serverId &&
           other.title == this.title &&
           other.completed == this.completed &&
           other.createdAt == this.createdAt);
@@ -188,29 +219,35 @@ class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
 
 class TodoSchemaCompanion extends UpdateCompanion<TodoSchemaData> {
   final Value<int> id;
+  final Value<int> serverId;
   final Value<String> title;
   final Value<bool> completed;
   final Value<DateTime> createdAt;
   const TodoSchemaCompanion({
     this.id = const Value.absent(),
+    this.serverId = const Value.absent(),
     this.title = const Value.absent(),
     this.completed = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   TodoSchemaCompanion.insert({
     this.id = const Value.absent(),
+    required int serverId,
     required String title,
     this.completed = const Value.absent(),
     this.createdAt = const Value.absent(),
-  }) : title = Value(title);
+  })  : serverId = Value(serverId),
+        title = Value(title);
   static Insertable<TodoSchemaData> custom({
     Expression<int>? id,
+    Expression<int>? serverId,
     Expression<String>? title,
     Expression<bool>? completed,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (serverId != null) 'server_id': serverId,
       if (title != null) 'title': title,
       if (completed != null) 'completed': completed,
       if (createdAt != null) 'created_at': createdAt,
@@ -219,11 +256,13 @@ class TodoSchemaCompanion extends UpdateCompanion<TodoSchemaData> {
 
   TodoSchemaCompanion copyWith(
       {Value<int>? id,
+      Value<int>? serverId,
       Value<String>? title,
       Value<bool>? completed,
       Value<DateTime>? createdAt}) {
     return TodoSchemaCompanion(
       id: id ?? this.id,
+      serverId: serverId ?? this.serverId,
       title: title ?? this.title,
       completed: completed ?? this.completed,
       createdAt: createdAt ?? this.createdAt,
@@ -235,6 +274,9 @@ class TodoSchemaCompanion extends UpdateCompanion<TodoSchemaData> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (serverId.present) {
+      map['server_id'] = Variable<int>(serverId.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
@@ -252,6 +294,7 @@ class TodoSchemaCompanion extends UpdateCompanion<TodoSchemaData> {
   String toString() {
     return (StringBuffer('TodoSchemaCompanion(')
           ..write('id: $id, ')
+          ..write('serverId: $serverId, ')
           ..write('title: $title, ')
           ..write('completed: $completed, ')
           ..write('createdAt: $createdAt')
@@ -273,12 +316,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 
 typedef $$TodoSchemaTableCreateCompanionBuilder = TodoSchemaCompanion Function({
   Value<int> id,
+  required int serverId,
   required String title,
   Value<bool> completed,
   Value<DateTime> createdAt,
 });
 typedef $$TodoSchemaTableUpdateCompanionBuilder = TodoSchemaCompanion Function({
   Value<int> id,
+  Value<int> serverId,
   Value<String> title,
   Value<bool> completed,
   Value<DateTime> createdAt,
@@ -302,24 +347,28 @@ class $$TodoSchemaTableTableManager extends RootTableManager<
               $$TodoSchemaTableOrderingComposer(ComposerState(db, table)),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
+            Value<int> serverId = const Value.absent(),
             Value<String> title = const Value.absent(),
             Value<bool> completed = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
           }) =>
               TodoSchemaCompanion(
             id: id,
+            serverId: serverId,
             title: title,
             completed: completed,
             createdAt: createdAt,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
+            required int serverId,
             required String title,
             Value<bool> completed = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
           }) =>
               TodoSchemaCompanion.insert(
             id: id,
+            serverId: serverId,
             title: title,
             completed: completed,
             createdAt: createdAt,
@@ -332,6 +381,11 @@ class $$TodoSchemaTableFilterComposer
   $$TodoSchemaTableFilterComposer(super.$state);
   ColumnFilters<int> get id => $state.composableBuilder(
       column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get serverId => $state.composableBuilder(
+      column: $state.table.serverId,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -356,6 +410,11 @@ class $$TodoSchemaTableOrderingComposer
   $$TodoSchemaTableOrderingComposer(super.$state);
   ColumnOrderings<int> get id => $state.composableBuilder(
       column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get serverId => $state.composableBuilder(
+      column: $state.table.serverId,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
