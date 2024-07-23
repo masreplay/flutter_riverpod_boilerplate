@@ -10,32 +10,30 @@ part 'todo_repository.g.dart';
 @riverpod
 TodoRepository todoRepository(TodoRepositoryRef ref) {
   final todoRDS = ref.read(todoRDSProvider);
-  final todoLDS = ref.read(todoLDSProvider);
+  final todoLDS = ref.read(todoLdsProvider);
   return TodoRepository(todoRDS, todoLDS);
 }
 
 class TodoRepository {
-  final TodoRDS _remote;
-  final TodoLDS _local;
+  final TodoRDS _remoteDataSource;
+  final TodoLds _localDataSource;
 
-  TodoRepository(this._remote, this._local);
+  TodoRepository(this._remoteDataSource, this._localDataSource);
 
   Future<List<TodoEntity>> get() async {
     try {
-      final todos = await _remote.getTodos();
-      await _local.insertTodos(todos);
-      return todos.map(TodoEntity.fromResponse).toList();
+      final todos = await _remoteDataSource.getTodos();
+      final list = todos.map(TodoEntity.fromResponse).toList();
+      await _localDataSource.insertTodos(list.map((e) => e.toSchemaData()).toList());
+      return list;
     } catch (e) {
-      final todos = await _local.getTodos();
-      if (todos.isNotEmpty) {
-        return todos.map(TodoEntity.fromSchemaData).toList();
-      }
-      throw Exception(e.toString());
+      final todos = await _localDataSource.getTodos();
+      return todos.map(TodoEntity.fromSchemaData).toList();
     }
   }
 
   Future<TodoEntity> getDetail(int id) async {
-    final response = await _remote.getTodo(id);
+    final response = await _remoteDataSource.getTodo(id);
     return TodoEntity.fromResponse(response);
   }
 

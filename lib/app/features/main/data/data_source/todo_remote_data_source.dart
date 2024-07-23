@@ -25,17 +25,17 @@ abstract class TodoRDS {
 }
 
 class TodoApiRDS implements TodoRDS {
-  final TodoClient _todoClient;
+  final TodoClient _client;
 
-  TodoApiRDS(this._todoClient);
+  TodoApiRDS(this._client);
   @override
   Future<List<TodoResponse>> getTodos() {
-    return _todoClient.getTodos();
+    return _client.getTodos();
   }
 
   @override
   Future<TodoResponse> getTodo(int id) {
-    return _todoClient.getTodo(id);
+    return _client.getTodo(id);
   }
 
   @override
@@ -43,6 +43,6 @@ class TodoApiRDS implements TodoRDS {
     String title,
     TodoRequestBody body,
   ) {
-    return _todoClient.createTodo(title, body);
+    return _client.createTodo(title, body);
   }
 }

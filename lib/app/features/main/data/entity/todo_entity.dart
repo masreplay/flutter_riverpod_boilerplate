@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_application_example/data/api/todo/todo_response.dart';
 import 'package:flutter_application_example/data/cache/database/database.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -28,6 +29,13 @@ class TodoEntity with _$TodoEntity {
       id: schemaData.id,
       title: schemaData.title,
       completed: schemaData.completed,
+    );
+  }
+
+  TodoSchemaCompanion toSchemaData() {
+    return TodoSchemaCompanion.insert(
+      title: title,
+      completed: Value(completed),
     );
   }
 }

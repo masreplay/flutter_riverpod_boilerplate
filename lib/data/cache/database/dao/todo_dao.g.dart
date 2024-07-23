@@ -6,19 +6,19 @@ part of 'todo_dao.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todoDAOHash() => r'908b2edfd9c92287c01212de31450fbdcaa762b9';
+String _$todoDaoHash() => r'3f419ffb37c59474a744fb67f99b0fd785dfbba7';
 
-/// See also [todoDAO].
-@ProviderFor(todoDAO)
-final todoDAOProvider = AutoDisposeProvider<TodoDAO>.internal(
-  todoDAO,
-  name: r'todoDAOProvider',
+/// See also [todoDao].
+@ProviderFor(todoDao)
+final todoDaoProvider = AutoDisposeProvider<TodoDao>.internal(
+  todoDao,
+  name: r'todoDaoProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$todoDAOHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$todoDaoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef TodoDAORef = AutoDisposeProviderRef<TodoDAO>;
+typedef TodoDaoRef = AutoDisposeProviderRef<TodoDao>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
