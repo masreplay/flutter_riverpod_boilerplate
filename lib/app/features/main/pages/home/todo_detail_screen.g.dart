@@ -6,7 +6,7 @@ part of 'todo_detail_screen.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todoHash() => r'6f77f249a121b3cdf243ebbadd07ab26fcaa8fc4';
+String _$todoHash() => r'7ea5e7a46f5b4a12cb57affdb00aced8f5953907';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,10 +29,10 @@ class _SystemHash {
   }
 }
 
-abstract class _$Todo extends BuildlessAutoDisposeAsyncNotifier<TodoResponse> {
+abstract class _$Todo extends BuildlessAutoDisposeAsyncNotifier<TodoEntity> {
   late final int id;
 
-  FutureOr<TodoResponse> build(
+  FutureOr<TodoEntity> build(
     int id,
   );
 }
@@ -42,7 +42,7 @@ abstract class _$Todo extends BuildlessAutoDisposeAsyncNotifier<TodoResponse> {
 const todoProvider = TodoFamily();
 
 /// See also [Todo].
-class TodoFamily extends Family<AsyncValue<TodoResponse>> {
+class TodoFamily extends Family<AsyncValue<TodoEntity>> {
   /// See also [Todo].
   const TodoFamily();
 
@@ -81,7 +81,7 @@ class TodoFamily extends Family<AsyncValue<TodoResponse>> {
 
 /// See also [Todo].
 class TodoProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<Todo, TodoResponse> {
+    extends AutoDisposeAsyncNotifierProviderImpl<Todo, TodoEntity> {
   /// See also [Todo].
   TodoProvider(
     int id,
@@ -109,7 +109,7 @@ class TodoProvider
   final int id;
 
   @override
-  FutureOr<TodoResponse> runNotifierBuild(
+  FutureOr<TodoEntity> runNotifierBuild(
     covariant Todo notifier,
   ) {
     return notifier.build(
@@ -134,7 +134,7 @@ class TodoProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<Todo, TodoResponse> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<Todo, TodoEntity> createElement() {
     return _TodoProviderElement(this);
   }
 
@@ -152,13 +152,13 @@ class TodoProvider
   }
 }
 
-mixin TodoRef on AutoDisposeAsyncNotifierProviderRef<TodoResponse> {
+mixin TodoRef on AutoDisposeAsyncNotifierProviderRef<TodoEntity> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
 class _TodoProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<Todo, TodoResponse>
+    extends AutoDisposeAsyncNotifierProviderElement<Todo, TodoEntity>
     with TodoRef {
   _TodoProviderElement(super.provider);
 

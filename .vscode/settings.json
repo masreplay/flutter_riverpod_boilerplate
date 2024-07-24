@@ -14,5 +14,6 @@
     "**/*.gen.dart": true
   },
   "cSpell.language": "en,ar",
-  "cSpell.words": []
+  "cSpell.words": [],
+  "dart.flutterSdkPath": ".fvm/versions/3.22.0"
 }
