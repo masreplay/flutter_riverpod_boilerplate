@@ -22,4 +22,13 @@ class TodoSupabaseClient {
         .order(DBConstants.fieldCreatedAt);
     return response.map(TodoResponse.fromJson).toList();
   }
+
+  Future<TodoResponse> getTodo(int id) async {
+    final response = await client
+        .from(DBConstants.tableTodos)
+        .select()
+        .eq(DBConstants.fieldId, id)
+        .single();
+    return TodoResponse.fromJson(response);
+  }
 }

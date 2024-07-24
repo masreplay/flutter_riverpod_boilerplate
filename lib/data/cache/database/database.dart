@@ -5,9 +5,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'database.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AppDatabase appDatabase(AppDatabaseRef ref) {
-  return AppDatabase();
+  final database = AppDatabase._();
+  // Closes the database connection when the provider is disposed.
+  // This is important to avoid memory leaks.
+  ref.onDispose(database.close);
+
+  return database;
 }
 
 /// Represents the application database.
@@ -17,7 +22,7 @@ AppDatabase appDatabase(AppDatabaseRef ref) {
 class AppDatabase extends _$AppDatabase {
   /// Creates an instance of the [AppDatabase] class.
   /// It calls the constructor of the superclass [_$AppDatabase] and passes the opened database connection.
-  AppDatabase() : super(_openConnection());
+  AppDatabase._() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;
