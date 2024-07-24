@@ -6,7 +6,7 @@ part of 'todo_remote_data_source.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todoRdsHash() => r'07ed58a895201de35c679a1b29fe8ef5853ee517';
+String _$todoRdsHash() => r'e4f4fa802abc86d2f2bb68dbbb4c759f57522b48';
 
 /// See also [todoRds].
 @ProviderFor(todoRds)

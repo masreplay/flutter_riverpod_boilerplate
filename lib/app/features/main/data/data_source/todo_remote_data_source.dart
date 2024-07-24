@@ -1,6 +1,7 @@
 import 'package:flutter_application_example/data/api/todo/todo_client.dart';
 import 'package:flutter_application_example/data/api/todo/todo_request_body.dart';
 import 'package:flutter_application_example/data/api/todo/todo_response.dart';
+import 'package:flutter_application_example/data/supabase/todo_supabase_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'todo_remote_data_source.g.dart';
@@ -8,8 +9,10 @@ part 'todo_remote_data_source.g.dart';
 @riverpod
 TodoRds todoRds(TodoRdsRef ref) {
   final todoClient = ref.read(todoClientProvider);
-  return TodoApiRds(todoClient);
+  final todoSupabaseClient = ref.read(todoSupabaseClientProvider);
+  return TodoApiRds(todoClient, todoSupabaseClient);
 }
+
 /// Abstract class representing a remote data source for todos.
 abstract class TodoRds {
   /// Retrieves a list of todos.
@@ -30,12 +33,13 @@ abstract class TodoRds {
 /// Implementation of the [TodoRds] interface using an API client.
 class TodoApiRds implements TodoRds {
   final TodoClient _client;
+  final TodoSupabaseClient _supabaseClient;
 
-  const TodoApiRds(this._client);
+  const TodoApiRds(this._client, this._supabaseClient);
 
   @override
   Future<List<TodoResponse>> getTodos() {
-    return _client.getTodos();
+    return _supabaseClient.getTodos();
   }
 
   @override

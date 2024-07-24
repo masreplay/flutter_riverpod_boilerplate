@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_application_example/app/features/main/data/data_source/todo_local_data_source.dart';
 import 'package:flutter_application_example/app/features/main/data/data_source/todo_remote_data_source.dart';
 import 'package:flutter_application_example/app/features/main/data/entity/message_entity.dart';
@@ -47,8 +49,10 @@ class TodoRepository {
       final response = await _remoteDataSource.getTodo(id);
       return TodoEntity.fromResponse(response);
     } catch (e) {
+      log(e.toString());
       final todo = await _localDataSource.getTodo(id);
       return TodoEntity.fromSchemaData(todo);
+      
     }
   }
 

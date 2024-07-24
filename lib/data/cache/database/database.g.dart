@@ -114,10 +114,19 @@ class $TodoSchemaTable extends TodoSchema
 }
 
 class TodoSchemaData extends DataClass implements Insertable<TodoSchemaData> {
+  /// The primary key column for the 'todos' table.
   final int id;
+
+  /// The server ID column for the 'todos' table.
   final int serverId;
+
+  /// The title column for the 'todos' table.
   final String title;
+
+  /// The completed column for the 'todos' table.
   final bool completed;
+
+  /// The createdAt column for the 'todos' table.
   final DateTime createdAt;
   const TodoSchemaData(
       {required this.id,
